@@ -2,6 +2,7 @@
 
 def hello():
     """
+    This method just prints the hello world string.
     """
     print "Hello World!!!"
 
