@@ -80,19 +80,49 @@ struct LinkList {
     void reverse_recursive(){
         Node *tmp = _head;
         _head = reverse_recursive_helper(tmp);
-    } 
+    }
+
+    Node* merge_helper(Node *a, Node *b){
+        if(a == nullptr)
+            return b;
+        if(b == nullptr)
+            return a;
+  
+        Node *res = nullptr;
+        if(a->_data <= b->_data){
+            res = a;
+            res->_next = merge_helper(a->_next,b);
+        }
+        else {
+            res = b; 
+            res->_next = merge_helper(a,b->_next);
+        }
+        return res;
+    }
+
+    LinkList& merge(LinkList& lst) {
+        Node *a = this->_head;
+        Node *b = lst._head;
+        Node *result = merge_helper(a,b);
+        this->_head = result;
+        return *this;
+    }
 
 };
 
 int main(){
     LinkList l;
-
+    LinkList l2;
     for(int i=1 ; i<5 ; i++)
-        l.insert_first(i);
-    l.print_list();
+        l.insert_last(i);
+    for(int i=5 ; i<8 ; i++)
+        l2.insert_last(i);
+
     l.reverse_iterative();
     l.print_list();
     l.reverse_recursive();
+    l.print_list();
+    l = l.merge(l2);
     l.print_list();
     return 0;
 }
